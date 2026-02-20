@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: Pedido Service API
+  version: 1.0.0
+  description: Microservicio envargado de la gestion de pedidos
+
+servers:
+  - url: http://localhost:8082
+
+paths:
+
+  /pedidos:
+    get:
+      summary: Listar todos los pedidos
+      tags: [ Pedidos ]
+      responses:
+        '200':
+          description: Lista de pedidos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PedidoResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      summary: Crear pedido
+      tags: [ Pedidos ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PedidoRequest'
+      responses:
+        '201':
+          description: Pedido creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PedidoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+
+  /pedidos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+
+    get:
+      summary: Obtener pedido por ID
+      tags: [ Pedidos ]
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PedidoResponse'
+          description: Encuentra el pedido mediate la ID
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Actualizar pedido completo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PedidoRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PedidoResponse'
+          description: Actualiza el pedido
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      summary: Modificar parcialmente pedido
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PedidoRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PedidoResponse'
+          description: Modifica el pedido
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Eliminar pedido
+      responses:
+        '204':
+          description: Eliminado correctamente
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+
+components:
+
+  schemas:
+
+    PedidoRequest:
+      type: object
+      required:
+        - clienteId
+        - producto
+        - cantidad
+      properties:
+        clienteId:
+          type: integer
+          example: 1
+        producto:
+          type: string
+          example: Laptop
+        cantidad:
+          type: integer
+          example: 2
+
+
+    PedidoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        clienteId:
+          type: integer
+        producto:
+          type: string
+        cantidad:
+          type: integer
+
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+
+
+  responses:
+
+    BadRequest:
+      description: Datos inválidos
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFound:
+      description: No encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Conflict:
+      description: Conflicto
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalServerError:
+      description: Error interno
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
