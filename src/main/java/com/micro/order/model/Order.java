@@ -4,6 +4,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
 @ToString
@@ -18,7 +19,7 @@ public class Order {
     private Long id;
 
     @Column(name = "clientId",nullable = false)
-    private String clientId;
+    private Long clientId;
 
     @Column(name = "productName",nullable = false,length = 200)
     private String productName;
@@ -42,7 +43,11 @@ public class Order {
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
 
-    @Column(name = "active")
+    @Column(name = "delete_at")
+    private LocalDateTime deletedAt;
+
+    @Column(name = "active",nullable = false)
+    @Builder.Default
     private boolean active = true;
 
     @PrePersist
@@ -66,4 +71,17 @@ public class Order {
             this.totalAmount = this.price.multiply(BigDecimal.valueOf(this.quantity));
         }
     }
+
+    public void disable(){
+        this.active = false;
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void enable(){
+        this.active = true;
+        this.deletedAt = null;
+    }
+
+    public boolean isDisabled(){return !this.active;}
+
 }

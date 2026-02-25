@@ -17,6 +17,7 @@ public interface OrderMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "deletedAt", ignore = true)
     @Mapping(target = "active", ignore = true)
     Order toEntity(OrderRequest request);
 
@@ -27,6 +28,7 @@ public interface OrderMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "deletedAt", ignore = true)
     @Mapping(target = "active", ignore = true)
     void updateEntityFromRequest(OrderRequest request, @MappingTarget Order order);
     List<OrderResponse> toResponseList(List<Order> orders);

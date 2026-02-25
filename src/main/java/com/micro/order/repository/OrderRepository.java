@@ -8,10 +8,9 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    List<Order> findByClient(Long clientId);
-    List<Order> findByStatus(OrderStatus status);
-    List<Order> findByClientAndStatus(Long clientId, OrderStatus status);
-    List<Order> findByActiveTrue();
+    List<Order> findByClientId(Long clientId);
 
-    Long countByClientId(Long clientId);
+    List<Order> findAllByActiveTrue();
+
+    List<Order> findByStatus(OrderStatus status);
 }
