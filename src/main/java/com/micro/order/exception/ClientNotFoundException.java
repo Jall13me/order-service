@@ -1,12 +1,15 @@
 package com.micro.order.exception;
 
+import lombok.Getter;
+
+@Getter
 public class ClientNotFoundException extends RuntimeException {
 
+    private final Long clientId;
+
     public ClientNotFoundException(Long clientId) {
-        super("Client with id " + clientId + " not found");
+        super(String.valueOf(clientId));
+        this.clientId = clientId;
     }
 
-    public ClientNotFoundException(String message) {
-        super(message);
-    }
 }

@@ -10,21 +10,21 @@ import java.math.BigDecimal;
 @Builder
 public class OrderRequest {
 
-    @NotNull(message = "Client ID is required")
-    @Positive(message = "Client ID must be positive")
+    @NotNull(message = "{validation.clientId.required}")
+    @Positive(message = "{validation.clientId.positive}")
     private Long clientId;
 
-    @NotBlank(message = "Product name is required")
-    @Size(max = 200,message = "Product name cannot exceed 200 characters")
+    @NotBlank(message = "{validation.productName.required}")
+    @Size(max = 200,message = "{validation.productName.size}")
     private String productName;
 
-    @NotNull(message = "Quantity is required")
-    @Min(value = 1,message = "Quantity must be at least 1")
-    @Max(value = 1000,message = "Quantity cannot exceed 1000")
+    @NotNull(message = "{validation.quantity.required}")
+    @Min(value = 1,message = "{validation.quantity.min}")
+    @Max(value = 1000,message = "{validation.quantity.max}")
     private Integer quantity;
 
-    @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.01",message = "Price must be greater than 0")
-    @DecimalMax(value ="999999.99",message = "Price cannot exceed 999999.99")
+    @NotNull(message = "{validation.price.required}")
+    @DecimalMin(value = "0.01",message = "{validation.price.min}")
+    @DecimalMax(value ="999999.99",message = "{validation.price.max}")
     private BigDecimal price;
 }
